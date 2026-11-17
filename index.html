@@ -133,7 +133,10 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
       byId('inspectPlace').hidden = !['gallery','dessert'].includes(zone);
       byId('inspectLabel').textContent = zone === 'gallery' ? '近看画展' : '近看甜品';
     }
-    player.pose = zone === 'stage' ? 'hug' : zone === 'gallery' ? 'look' : zone === 'aisle' ? 'wave-'+player.vertical : player.direction;
+    player.pose = zone === 'stage' ? 'hug'
+      : zone === 'gallery' && !wasMoving ? 'look'
+      : zone === 'aisle' ? 'wave-'+player.vertical
+      : player.direction;
     scene.dataset.pose = player.pose;
   }
   function resetStick() {
@@ -225,7 +228,7 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
     const s = pixelHeight/viewHeight;
     const scale = playerScale;
     const zx = Math.round(player.x), zy = Math.round(player.y);
-    const viewing = player.zone === 'gallery';
+    const viewing = player.pose === 'look';
     const fr = wasMoving && player.pose!=='hug' ? Math.floor(motion)%4 : (player.pose==='hug' && !reducedMotion ? Math.floor(idle*2)%4 : 0);
     const resting = !wasMoving && images[player.pose+'-idle'];
     const cameraPixelX = Math.round(camera.x*s), cameraPixelY = Math.round(camera.y*s);
