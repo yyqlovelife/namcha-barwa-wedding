@@ -14,15 +14,15 @@ body{margin:0;min-height:100vh;min-height:100dvh;display:grid;place-items:center
 button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 button:focus-visible{outline:3px solid #fff5b9;outline-offset:3px}
 [hidden]{display:none!important}
-#frame{position:relative;isolation:isolate;width:min(calc((100vh - 32px)*.5625),calc(100vw - 24px),480px);width:min(calc((100dvh - 32px)*.5625),calc(100vw - 24px),480px);aspect-ratio:9/16;overflow:hidden;background:#5086b4;border-radius:14px;box-shadow:0 0 0 1px #f8f0cb39,0 24px 80px #07151985;touch-action:none;user-select:none;-webkit-user-select:none}
+#frame{--world-aspect:1.88275862;position:relative;isolation:isolate;width:min(100vw,calc(100vh*var(--world-aspect)));width:min(100vw,calc(100dvh*var(--world-aspect)));height:100vh;height:100dvh;overflow:hidden;background:#5086b4;touch-action:none;user-select:none;-webkit-user-select:none}
 #scene{width:100%;height:100%;display:block;image-rendering:pixelated}
-.hud{position:absolute;inset:0 0 auto;display:flex;justify-content:space-between;align-items:flex-start;padding:15px 15px 27px;pointer-events:none;background:linear-gradient(#16395458,transparent)}
+.hud{position:absolute;inset:0 0 auto;display:flex;justify-content:space-between;align-items:flex-start;padding:max(15px,env(safe-area-inset-top)) max(15px,env(safe-area-inset-right)) 27px max(15px,env(safe-area-inset-left));pointer-events:none;background:linear-gradient(#16395458,transparent)}
 .signature{filter:drop-shadow(0 1px 2px #203d52);color:#fffbed}
 h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif CJK SC","STSong",serif;letter-spacing:.1em}
 #weddingDate{font-size:11px;line-height:1.4;letter-spacing:.09em}
 .hud-button,.close{border:1px solid #fffae583;background:#2944547a;width:40px;height:40px;display:grid;place-items:center;border-radius:50%;pointer-events:auto}
 .hud-button svg{width:19px;height:19px;fill:none;stroke:#fffae7;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
-.touch-area{position:absolute;left:0;right:0;bottom:max(64px,calc(env(safe-area-inset-bottom) + 48px));padding:0 22px;display:flex;align-items:center;justify-content:space-between;flex-direction:row-reverse;pointer-events:none}
+.touch-area{position:absolute;left:0;right:0;bottom:max(64px,calc(env(safe-area-inset-bottom) + 48px));padding:0 max(22px,env(safe-area-inset-right)) 0 max(22px,env(safe-area-inset-left));display:flex;align-items:center;justify-content:space-between;flex-direction:row-reverse;pointer-events:none}
 #stick{position:relative;flex:none;margin-right:30px;width:clamp(74px,21.5vw,90px);aspect-ratio:1;pointer-events:auto;touch-action:none;border-radius:50%;border:1.5px solid #fffbe4aa;background:radial-gradient(circle,#28463059 8%,#354f3f61 60%,#263e3650);box-shadow:inset 0 0 0 4px #f8f5d51c,0 2px 9px #21372139;cursor:grab}
 #stick:active{cursor:grabbing}
 #thumb{position:absolute;width:38%;height:38%;left:31%;top:31%;border-radius:50%;background:linear-gradient(145deg,#fff9dfce,#eee6b999);border:1px solid #fff6c9b5;box-shadow:0 2px 4px #1c312a45;pointer-events:none}
@@ -34,8 +34,8 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
 #detail{margin:auto;width:max-content;max-width:94vw;max-height:92dvh;padding:0 0 12px;border-radius:14px;border:1px solid #f4e9bc70;background:#1c343b;box-shadow:0 18px 80px #09171b80;overflow:auto;color:#fff9e6}
 #detail::backdrop{background:#081517c9}.panel-head{display:flex;align-items:center;justify-content:space-between;padding:8px 12px 8px 18px;gap:20px}.panel-head h2{font:600 17px/1.4 "Songti SC","STSong",serif;letter-spacing:.09em;margin:0}.close{width:34px;height:34px;font:24px/1 sans-serif;background:transparent}
 #detailArt,#overview{display:block;max-width:min(92vw,1060px);max-height:71dvh;width:auto;height:auto;object-fit:contain}.map-box{position:relative}#mapLegend{font-size:12px;margin:10px 15px 0;color:#f7eaca;display:flex;align-items:center;gap:7px}#mapLegend i{width:9px;height:9px;border-radius:100%;border:2px solid #fff9dd;background:#b64940}
-@media (orientation:portrait) and (max-width:620px){#frame{width:100%;height:100vh;height:100dvh;aspect-ratio:auto;border-radius:0;box-shadow:none}.hud{padding-top:max(12px,env(safe-area-inset-top));padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}}
-@media (max-height:460px){#frame{width:min(100vw,calc(100dvh*.5625));border-radius:4px}.hud{padding:6px 8px}.touch-area{padding:0 12px;bottom:35px}#stick{width:52px}.hud-button{width:31px;height:31px}h1{font-size:14px}}
+@media (orientation:portrait) and (max-width:620px){.hud{padding-top:max(12px,env(safe-area-inset-top));padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}}
+@media (max-height:460px){.hud{padding-top:max(8px,env(safe-area-inset-top))}.touch-area{bottom:max(28px,calc(env(safe-area-inset-bottom) + 16px))}#stick{width:74px}.hud-button{width:34px;height:34px}h1{font-size:18px}}
 </style>
 </head>
 <body>
@@ -63,9 +63,15 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
   const normalGain = 1;
   const duckGain = .32;
   const fireworkDelay = 5;
+  const introBoost = 4;
+  const introHold = 3;
+  const introEnd = 5.5;
   const background = {asset:'bgm',buffer:null,request:null,error:'',decodeMs:null};
   const blessing = {asset:'blessing',buffer:null,request:null,error:'',decodeMs:null};
-  let context, musicGain, voiceGain, masterGain;
+  let context, introGain, musicGain, voiceGain, masterGain;
+  let lastScheduledIntro = -1;
+  const timing = {firstDown:null,firstUp:null,firstResume:null,activatedResume:null,
+    prepared:null,running:null,sourceStart:null};
   let musicNode=null, musicStartedAt=0, backgroundStarts=0;
   let pendingSuspend=null;
   let activeVoice=null, pendingVoice=null, completedCue=null;
@@ -81,10 +87,12 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
       if (!AudioContextClass) { contextError='AudioContextUnavailable'; return false; }
       try { if (navigator.audioSession) navigator.audioSession.type='playback'; } catch (_) {}
       context=new AudioContextClass();
+      introGain=context.createGain();
       musicGain=context.createGain();
       voiceGain=context.createGain();
       masterGain=context.createGain();
       masterGain.gain.value=visible()?1:0;
+      introGain.connect(musicGain);
       musicGain.connect(masterGain);
       voiceGain.connect(masterGain);
       masterGain.connect(context.destination);
@@ -112,30 +120,58 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
         track.buffer=buffer;
         track.decodeMs=Math.round(performance.now()-started);
         track.error='';
+        if (track===background) timing.prepared=performance.now();
         syncPlayback();
         return buffer;
       })
-      .catch(error=>{ track.error=error.name || 'AudioDecodeError'; return null; })
+      .catch(error=>{
+        track.error=error.name || 'AudioDecodeError';
+        if (track===background) throw error;
+        return null;
+      })
       .finally(()=>{ track.request=null; });
     return track.request;
   }
   function prepare() {
-    if (!ensureGraph()) return Promise.resolve(null);
+    if (!ensureGraph()) return Promise.reject(new Error(contextError));
     decode(blessing);
     return decode(background);
+  }
+  function scheduleIntros() {
+    if (!musicNode) return;
+    const now=context.currentTime;
+    const duration=background.buffer.duration;
+    const cycle=Math.max(0,Math.floor((now-musicStartedAt)/duration));
+    if (lastScheduledIntro>=cycle+1) return;
+    const gain=introGain.gain;
+    // Queue the next loop on the audio clock while the current one is still playing.
+    for (let i=Math.max(cycle,lastScheduledIntro+1); i<=cycle+1; i++) {
+      const start=musicStartedAt+i*duration;
+      const holdUntil=start+introHold;
+      const end=start+introEnd;
+      const from=Math.max(start,now);
+      if (from>=end) { gain.setValueAtTime(1,now); continue; }
+      const fraction=Math.max(0,(from-holdUntil)/(introEnd-introHold));
+      gain.setValueAtTime(introBoost**(1-fraction),from);
+      if (holdUntil>from) gain.setValueAtTime(introBoost,holdUntil);
+      gain.exponentialRampToValueAtTime(1,end);
+    }
+    lastScheduledIntro=cycle+1;
   }
   function startLoop() {
     if (musicNode || !background.buffer) return;
     const node=context.createBufferSource();
     node.buffer=background.buffer;
     node.loop=true;
-    node.connect(musicGain);
+    node.connect(introGain);
     try {
       const startTime=context.currentTime;
       node.start(startTime);
       musicNode=node;
       musicStartedAt=startTime;
       backgroundStarts++;
+      timing.sourceStart=performance.now();
+      scheduleIntros();
       background.error='';
     } catch (error) {
       node.disconnect();
@@ -191,6 +227,7 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
     }
   }
   function takeFireworkCue() {
+    scheduleIntros();
     const voice=activeVoice || completedCue;
     if (!voice || voice.ticket!==voiceTicket || voice.cueTaken || !visible() || context.state!=='running') return false;
     const elapsed=context.currentTime-voice.startedAt;
@@ -214,6 +251,7 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
     if (!visible()) { silence(); return; }
     if (!ready || context?.state!=='running' || pendingSuspend) return;
     unlocked=true;
+    if (timing.running===null) timing.running=performance.now();
     startLoop();
     startPendingVoice();
   }
@@ -221,8 +259,11 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
     if (!ready || !visible() || !ensureGraph()) return;
     masterGain.gain.setValueAtTime(1,context.currentTime);
     // An autoplay resume can remain pending. Always let a later trusted gesture call resume directly.
-    if (context.state!=='running') context.resume().then(syncPlayback,()=>{});
-    else syncPlayback();
+    if (context.state==='running') { syncPlayback(); return; }
+    const now=performance.now();
+    if (timing.firstResume===null) timing.firstResume=now;
+    if (timing.activatedResume===null && navigator.userActivation?.isActive) timing.activatedResume=now;
+    context.resume().then(syncPlayback,()=>{});
   }
   function pauseForBackground() {
     pendingVoice=null;
@@ -231,9 +272,11 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
   function onGesture(event) {
     if (!event.isTrusted || !ready) return;
     if (event.type==='keydown' && (event.repeat || event.ctrlKey || event.altKey || event.metaKey)) return;
+    if (timing.firstDown===null && (event.type==='pointerdown' || event.type==='touchstart')) timing.firstDown=performance.now();
+    if (timing.firstUp===null && (event.type==='pointerup' || event.type==='touchend')) timing.firstUp=performance.now();
     if (!musicNode || context?.state!=='running') {
       attemptStart();
-      if (!background.buffer && !background.request) prepare();
+      if (!background.buffer && !background.request) prepare().catch(()=>{});
     }
   }
   for (const event of ['pointerdown','touchstart','pointerup','touchend','click','keydown']) {
@@ -251,7 +294,8 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
     start() {
       ready=true;
       attemptStart();
-      prepare();
+      // The game's loading promise separately observes preparation failures and can retry.
+      prepare().catch(()=>{});
     },
     celebrate() {
       const ticket=++voiceTicket;
@@ -274,6 +318,8 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
       return {
         context:context?.state || 'uninitialized',ready,unlocked,output:'buffer',
         prepared:!!background.buffer,decodeMs:background.decodeMs,backgroundStarts,
+        introGain:introGain?.gain.value ?? null,introBoost,introHold,introEnd,
+        timing:{...timing},outputTimestamp:context?.getOutputTimestamp?.() ?? null,
         backgroundPaused:!musicNode || context.state!=='running' || !visible(),
         currentTime:background.buffer ? elapsed%background.buffer.duration : 0,
         duration:background.buffer?.duration ?? null,loop:musicNode?.loop ?? true,
@@ -434,7 +480,8 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
     if (wasMoving) { motion += moved / 24; idle = 0; }
   }
   function cameraLimits(x,y) {
-    return {x:clamp(x,-origin,images.world.width-origin-camera.width), y:clamp(y,skyTop,images.world.height-viewHeight)};
+    const right=Math.max(-origin,images.world.width-origin-camera.width);
+    return {x:clamp(x,-origin,right), y:clamp(y,skyTop,images.world.height-viewHeight)};
   }
   function follow(dt) {
     // At the entrance the full aisle is ahead. Lower meadow and the two wings unfold as the couple walks.
@@ -448,7 +495,7 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
     pixelWidth = Math.max(1,Math.round(bounds.width*dpr)); pixelHeight = Math.max(1,Math.round(bounds.height*dpr));
     scene.width = pixelWidth; scene.height = pixelHeight;
     lastPaint = null;
-    camera.width = viewHeight * bounds.width / bounds.height;
+    camera.width = Math.min(viewHeight * bounds.width / bounds.height,images.world?.width || Infinity);
     if (loaded) {
       Object.assign(camera,cameraLimits(player.x-camera.width/2,-100+(player.y-900)*.78)); draw();
     }
@@ -639,11 +686,13 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
     for (const name of ['up','down','left','right','wave-up','wave-down','look']) if (ART[name+'-idle']) names.push(name+'-idle');
     if(ART.layers.length)names.push('cover');
     const imageLoads=names.map(name=>new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>{images[name]=im;resolve();};im.onerror=()=>reject(Error(name));im.src=ART[name];}));
-    await Promise.all([...imageLoads,music.prepare()]);
+    const audioLoad=music.prepare().catch(()=>music.prepare());
+    await Promise.all([...imageLoads,audioLoad]);
+    frame.style.setProperty('--world-aspect',String(images.world.width/viewHeight));
     buildSky(); loaded=true; updatePose(); updateGuests(); resize(); byId('loading').hidden=true;
     lastTime=0; frameRequest=requestAnimationFrame(tick);
   }
-  start().catch(()=>{byId('loading').textContent='场景未能载入，请重新打开游戏。';});
+  start().catch(()=>{byId('loading').textContent='暂时未能进入会场，请重新打开。';});
 })();
 </script>
 </body></html>
