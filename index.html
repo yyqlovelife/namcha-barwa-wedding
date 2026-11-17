@@ -70,8 +70,9 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
   const blessing = {asset:'blessing',buffer:null,request:null,error:'',decodeMs:null};
   let context, introGain, musicGain, voiceGain, masterGain;
   let lastScheduledIntro = -1;
+  let activationRetried = false;
   const timing = {firstDown:null,firstUp:null,firstResume:null,activatedResume:null,
-    prepared:null,running:null,sourceStart:null};
+    prepared:null,running:null,sourceStart:null,stickyRetry:null};
   let musicNode=null, musicStartedAt=0, backgroundStarts=0;
   let pendingSuspend=null;
   let activeVoice=null, pendingVoice=null, completedCue=null;
@@ -226,7 +227,16 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
       rampMusic(normalGain,.2);
     }
   }
+  function retryAfterTouchActivation() {
+    if (activationRetried || musicNode || !ready || !visible() || timing.firstDown===null) return;
+    if (context?.state!=='suspended' || !navigator.userActivation?.hasBeenActive) return;
+    // Chrome can grant activation during a held touch without sending another pointer event.
+    activationRetried=true;
+    timing.stickyRetry=performance.now();
+    attemptStart();
+  }
   function takeFireworkCue() {
+    retryAfterTouchActivation();
     scheduleIntros();
     const voice=activeVoice || completedCue;
     if (!voice || voice.ticket!==voiceTicket || voice.cueTaken || !visible() || context.state!=='running') return false;
@@ -319,7 +329,7 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
         context:context?.state || 'uninitialized',ready,unlocked,output:'buffer',
         prepared:!!background.buffer,decodeMs:background.decodeMs,backgroundStarts,
         introGain:introGain?.gain.value ?? null,introBoost,introHold,introEnd,
-        timing:{...timing},outputTimestamp:context?.getOutputTimestamp?.() ?? null,
+        activationRetried,timing:{...timing},outputTimestamp:context?.getOutputTimestamp?.() ?? null,
         backgroundPaused:!musicNode || context.state!=='running' || !visible(),
         currentTime:background.buffer ? elapsed%background.buffer.duration : 0,
         duration:background.buffer?.duration ?? null,loop:musicNode?.loop ?? true,
