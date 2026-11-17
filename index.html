@@ -219,10 +219,11 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
     const zx = Math.round(player.x), zy = Math.round(player.y);
     const viewing = player.zone === 'gallery';
     const fr = wasMoving && !['hug','look'].includes(player.pose) ? Math.floor(motion)%4 : (['hug','look'].includes(player.pose) && !reducedMotion ? Math.floor(idle*2)%4 : 0);
+    const resting = !wasMoving && images[player.pose+'-idle'];
     const cameraPixelX = Math.round(camera.x*s), cameraPixelY = Math.round(camera.y*s);
     const effectFrame = fireworkAge < 2 ? Math.round(fireworkAge*60) : -1;
-    if (lastPaint && lastPaint.x === zx && lastPaint.y === zy && lastPaint.cx === cameraPixelX && lastPaint.cy === cameraPixelY && lastPaint.pose === player.pose && lastPaint.fr === fr && lastPaint.effectFrame === effectFrame) return;
-    lastPaint = {x:zx,y:zy,cx:cameraPixelX,cy:cameraPixelY,pose:player.pose,fr,effectFrame};
+    if (lastPaint && lastPaint.x === zx && lastPaint.y === zy && lastPaint.cx === cameraPixelX && lastPaint.cy === cameraPixelY && lastPaint.pose === player.pose && lastPaint.fr === fr && lastPaint.resting === !!resting && lastPaint.effectFrame === effectFrame) return;
+    lastPaint = {x:zx,y:zy,cx:cameraPixelX,cy:cameraPixelY,pose:player.pose,fr,resting:!!resting,effectFrame};
     ctx.setTransform(s,0,0,s,-cameraPixelX,-cameraPixelY);
     ctx.imageSmoothingEnabled = false;
     if (camera.y < 0) ctx.drawImage(sky,-origin,skyTop);
@@ -232,7 +233,6 @@ h1{margin:0 0 2px;font:600 clamp(17px,2.5vh,22px)/1.35 "Songti SC","Noto Serif C
     ctx.scale(viewing && player.x>373 ? -scale : scale,scale);
     ctx.fillStyle='#26362345'; ctx.beginPath(); ctx.ellipse(-3,-4,38,5,-.04,0,Math.PI*2); ctx.fill();
     const footCenter = ART.anchors?.[player.pose] ?? 113;
-    const resting = !wasMoving && images[player.pose+'-idle'];
     ctx.drawImage(resting || images[player.pose],resting ? 0 : fr*200,0,200,160,-footCenter,-152,200,160);ctx.restore();
     for (const o of ART.layers) {
       if (player.y >= o.depth || player.x+90 < o.x || player.x-90 > o.x+o.w || player.y < o.y || player.y-152 > o.y+o.h) continue;
